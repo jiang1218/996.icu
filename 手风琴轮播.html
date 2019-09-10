@@ -1,0 +1,94 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <meta http-equiv="X-UA-Compatible" content="ie=edge">
+  <title>Document</title>
+  <style>
+    ul {
+      list-style: none;
+      margin: 0 auto;
+      display: flex;
+      width: 1200px;
+      height: 400px;
+      overflow: hidden;
+    }
+
+    li {
+      width: 240px;
+      height: 400px;
+      transition: width 500ms
+    }
+  </style>
+</head>
+
+<body>
+  <ul>
+    <li>
+      <a href="#">
+        <img src="images/001.jpg" alt="">
+      </a>
+    </li>
+    <li>
+      <a href="#">
+        <img src="images/002.jpg" alt="">
+      </a>
+    </li>
+    <li>
+      <a href="#">
+        <img src="images/003.jpg" alt="">
+      </a>
+    </li>
+    <li>
+      <a href="#">
+        <img src="images/004.jpg" alt="">
+      </a>
+    </li>
+    <li>
+      <a href="#">
+        <img src="images/005.jpg" alt="">
+      </a>
+    </li>
+  </ul>
+
+  <script>
+    //获取页面中需要的元素
+    var lis = document.querySelectorAll('li');
+    var ul = document.querySelector('ul');
+    //定义函数，排他思想
+    function clen() {
+      for (var j = 0; j < lis.length; j++) {
+        lis[j].style.width = '100px';
+      }
+    }
+    //设置定时器 出现轮播效果
+    var index = 0;
+    var timer = setInterval(() => {
+      clen();
+      lis[index].style.width = '800px';
+      index = (index + 1) % lis.length;
+    }, 800);
+    //鼠标移入时，停止计时器
+    for (let i = 0; i < lis.length; i++) {
+      lis[i].onmouseover = function () {   
+        clearInterval(timer++);
+        clen();
+        this.style.width = '800px';
+      }
+      //鼠标移出   启动计时器
+      ul.onmouseout = function () {
+        var timer = setInterval(() => {
+          console.log(index);
+          clen();
+          lis[index].style.width = '800px';
+          index = (index + 1) % lis.length;
+        }, 800);
+      }
+    }
+
+  </script>
+</body>
+
+</html>

@@ -1,0 +1,226 @@
+<!DOCTYPE html>
+<html>
+
+<head>
+	<title>轮播图1</title>
+	<style type="text/css">
+		ul {
+			list-style: none;
+		}
+		
+		.imgs {
+			width: 590px;
+			height: 470px;
+			overflow: hidden;
+		}
+
+		.dots {
+			width: 164px;
+			position: absolute;
+			left: 250px;
+			top: 450px;
+			z-index: 999;
+		}
+
+		.dot {
+			width: 10px;
+			height: 10px;
+			border: 2px solid #fff;
+			border-radius: 10px;
+			display: inline-block;
+			cursor: pointer;
+		}
+	</style>
+</head>
+
+<body>
+	<div class="ad">
+		<ul id="imgs" class="imgs">
+			<li class="img_li"><img src="images/5.jpg"></li>
+			<li class="img_li"><img src="images/6.jpg"></li>
+			<li class="img_li"><img src="images/1.jpg"></li>
+			<li class="img_li"><img src="images/2.jpg"></li>
+			<li class="img_li"><img src="images/3.jpg"></li>
+			<li class="img_li"><img src="images/4.jpg"></li>
+		</ul>
+		<ul class="dots">
+			<li class="dot" style="background-color: #fff"></li>
+			<li class="dot"></li>
+			<li class="dot"></li>
+			<li class="dot"></li>
+			<li class="dot"></li>
+			<li class="dot"></li>
+		</ul>
+	</div>
+
+	<!-- <script type="text/javascript">
+	window.onload = function(){
+		// 简单轮播图-自动切换图片
+		// 设置定时器，每隔1秒，将第一张图片移动到最后
+		// setInterval(function(){
+		// 	var imgs = document.getElementById('imgs');
+		// 	imgs.appendChild(imgs.firstElementChild);
+		// }, 1000);
+
+		//简单轮播图-自动切换图片
+		/*
+		var num = 0;
+		setInterval(function(){
+			//将之前显示的图片 隐藏，将后一张显示
+			var img_lis = document.querySelectorAll('.img_li');
+			//将前一张显示的图片隐藏
+			img_lis[num].style.display = 'none';
+			//将后一张显示
+			// if(num == img_lis.length-1){
+			// 	num = 0;
+			// }else{
+			// 	num++;
+			// }
+
+			num++;
+			//num达到图片最大数量，还原为0
+			if(num == img_lis.length) num = 0;
+
+			//取余逻辑    0 1 2 3 4 5   6 7 8 9
+			//num作为下标 0 1 2 3 4 5   0 1 2 3 
+			// num = num % img_lis.length;
+
+			img_lis[num].style.display = 'block';
+		}, 1000);
+*/
+/*
+		var num = 0;
+		setInterval(function(){
+			//将所有图片隐藏，将后一张显示
+			var img_lis = document.querySelectorAll('.img_li');
+			//将所有图片隐藏
+			for(var i=0; i<img_lis.length; i++){
+				img_lis[i].style.display = 'none';
+			}
+
+			num++;
+			//num达到图片最大数量，还原为0
+			if(num == img_lis.length) num = 0;
+			// 将后一张显示
+			img_lis[num].style.display = 'block';
+		}, 1000);
+		*/
+
+		//轮播图-鼠标悬浮切换图片
+/*
+		//给小圆圈 绑定鼠标悬浮事件
+		var dots = document.querySelectorAll('.dot');
+		var img_lis = document.querySelectorAll('.img_li');
+		for(let i=0; i<dots.length; i++){
+			// (function(i){
+				//循环绑定事件
+				dots[i].onmouseover = function(){
+					// 先隐藏所有图片 将所有圆圈变成空心
+					for(var j=0; j<img_lis.length; j++){
+						img_lis[j].style.display = 'none';
+						dots[j].style.backgroundColor = '';
+					}
+
+					// 显示第i张图片
+					img_lis[i].style.display = 'block';
+					// 改变小圆圈的状态 当前这个圆圈 变成实心的
+					// dots[i].style.backgroundColor = '#fff';
+					this.style.backgroundColor = '#fff';
+				}
+			// })(i);
+		}
+*/
+
+		//轮播图 综合效果
+		// 专门切换图片的函数
+	/*	function change(n){
+			var dots = document.querySelectorAll('.dot');
+			var img_lis = document.querySelectorAll('.img_li');
+			// 先隐藏所有图片 将所有圆圈变成空心
+			for(var j=0; j<img_lis.length; j++){
+				img_lis[j].style.display = 'none';
+				dots[j].style.backgroundColor = '';
+			}
+			n = n % img_lis.length; //0 1 2 3 4 5 0 1 2 3 4 5 
+			// 显示第n张图片
+			img_lis[n].style.display = 'block';
+			// 改变小圆圈的状态 当前这个圆圈 变成实心的
+			dots[n].style.backgroundColor = '#fff';
+		}
+
+		//设置定时器
+		var num = 0;
+		var timer = setInterval(function(){
+			num++;
+			// var img_lis = document.querySelectorAll('.img_li');
+			// if(num == img_lis.length) num =0;
+			change(num);
+		}, 1000);
+
+		//鼠标悬浮
+		var dots = document.querySelectorAll('.dot');
+		for(let i=0; i<dots.length; i++){
+			dots[i].onmouseover = function(){
+				change(i);
+				//停止定时器
+				clearInterval(timer);
+			}
+			//鼠标离开 重新设置定时器
+			dots[i].onmouseout = function(){
+				num = i;//新的定时器 从第几张图片开始
+				//注意 timer必须是全局变量
+				timer = setInterval(function(){
+					num++;
+					change(num);
+				}, 1000);
+			}
+		}
+
+		*/
+
+	}
+	
+</script> -->
+	<script type="text/javascript">
+		window.onload = function () {
+			// 将定时器函数封装
+			function change(cont) {
+				timer = setInterval(() => {
+					// 控制图片,控制小点点
+					close();
+					img_lis[cont].style.display = ' block ';
+					dots[cont].style.backgroundColor = '#fff';
+					cont = ++cont % img_lis.length;
+				}, 1000);
+			};
+			// 设置效果消失函数
+			function close() {
+				for (var i = 0; i < img_lis.length; i++) {
+					img_lis[i].style.display = 'none';
+					dots[i].style.backgroundColor = '';
+				}
+			};
+			// 获取所有的图片，形成轮播图效果
+			var img_lis = document.querySelectorAll(' .img_li ');
+			// 获取所有的小点点
+			var dots = document.querySelectorAll(' .dot ');
+			change(1);
+			// 小点点的移入事件
+			(function () {
+				for (let j = 0; j < dots.length; j++) {
+					dots[j].onmouseover = function (e) {
+						clearInterval(timer);
+						close();
+						this.style.backgroundColor = ' #fff ';
+						img_lis[j].style.display = ' block ';
+					}
+					dots[j].onmouseout = function () {
+						change(j + 1);
+					}
+				}
+			})();
+		}
+	</script>
+</body>
+
+</html>
