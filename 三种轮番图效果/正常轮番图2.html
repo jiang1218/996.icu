@@ -1,0 +1,213 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <meta http-equiv="X-UA-Compatible" content="ie=edge">
+  <title>Document</title>
+  <style>
+    * {
+      padding: 0;
+      margin: 0;
+    }
+
+    #inner {
+      margin: 20px auto;
+      overflow: hidden;
+      width: 730px;
+      height: 454px;
+      position: relative;
+    }
+
+    ul {
+      list-style: none;
+      position: absolute;
+      width: 700%;
+      left: 0;
+      transition: left 300ms linear;
+    }
+
+    li {
+      float: left;
+    }
+
+    .list {
+      display: flex;
+      position: absolute;
+      left: 30%;
+      bottom: 40px;
+    }
+
+    i {
+      width: 20px;
+      height: 20px;
+      border-radius: 10px;
+      border: solid 1px red;
+      background-color: #fff;
+      text-align: center;
+      margin: 0 20px;
+      cursor: pointer;
+    }
+
+    .arrow {
+      position: absolute;
+      width: 100%;
+      top: 50%;
+      margin-top: -30px;
+    }
+
+    .arrow-left,
+    .arrow-right {
+      width: 30px;
+      height: 60px;
+      position: absolute;
+      font: 20px/60px "consolas";
+      color: #fff;
+      background-color: rgba(0, 0, 0, .3);
+      text-align: center;
+      cursor: pointer;
+    }
+
+    .arrow-right {
+      right: 0;
+    }
+
+    .current {
+      background-color: skyblue;
+      color: #fff;
+    }
+
+    .active {
+      display: block;
+    }
+
+    .not {
+      display: none;
+    }
+  </style>
+</head>
+
+<body>
+  <div id='inner'>
+    <ul>
+      <li class="active">
+        <img src="images/01.jpg" alt="">
+      </li>
+      <li>
+        <img src="images/02.jpg" alt="">
+      </li>
+      <li>
+        <img src="images/03.jpg" alt="">
+      </li>
+      <li>
+        <img src="images/04.jpg" alt="">
+      </li>
+      <li>
+        <img src="images/05.jpg" alt="">
+      </li>
+      <li>
+        <img src="images/06.jpg" alt="">
+      </li>
+      <li>
+        <img src="images/01.jpg" alt="">
+      </li>
+    </ul>
+    <div class="list">
+      <i class="current">1</i>
+      <i>2</i>
+      <i>3</i>
+      <i>4</i>
+      <i>5</i>
+      <i>6</i>
+    </div>
+    <div class="arrow">
+      <span class="arrow-left">&lt;</span>
+      <span class="arrow-right">&gt;</span>
+    </div>
+  </div>
+  <script>
+    // 当前图片下标
+    var currentIndex = 0;
+    // 目标1 序号按钮控制图片的切换还有自身的样式
+    var orderBtns = document.querySelectorAll('i');
+    var li0 = document.querySelector('li');
+    var ul = document.querySelector('ul');
+    // 1. 给每一个序号按钮添加鼠标移入事件
+    for (var i = 0; i < orderBtns.length; i++) {
+      orderBtns[i].index = i;
+      orderBtns[i].onmouseover = function () {
+        // 2. 图片的切换还有自身的样式
+        // 1> 改变序号按钮样式
+        for (var j = 0; j < orderBtns.length; j++) {
+          orderBtns[j].classList.remove('current');
+        }
+        this.classList.add('current');
+        // 2> 改变ul的定位   图片的下标*图片的宽度
+        console.log(this.index * li0.offsetWidth);
+        currentIndex = this.index;
+        ul.style.left = -this.index * li0.offsetWidth + 'px';
+      }
+    }
+
+    // 目标2 左右按钮控制图片切换和按钮样式
+    // 1. 右边按钮点击
+    var right = document.querySelector('.arrow-right');
+    right.onclick = function () {
+      // 3. 判断图片的下标超出，回归到0
+      if (currentIndex == 6) {
+        currentIndex = 0;
+        ul.style.left = 0 + 'px';
+        ul.style.transition = 'none';
+      }
+      // 2. 当前图片下标+1
+      currentIndex++;
+      // 4. 设置ul的定位 == 当前图片下标*图片的宽度
+      ul.style.left = - currentIndex * li0.offsetWidth + 'px';
+      ul.style.transition = '.3s';
+      // 5. 设置序号按钮的样式
+      for (var j = 0; j < orderBtns.length; j++) {
+        orderBtns[j].classList.remove('current');
+      }
+      orderBtns[currentIndex%6].classList.add('current');
+    }
+
+    var left = document.querySelector('.arrow-left');
+    left.onclick = function () {
+      // 3. 判断图片的下标小于0，到5
+      if( currentIndex == 0 ){
+        ul.style.transition = 'none';
+        currentIndex = 6;
+        ul.style.left = -6 * li0.offsetWidth + 'px';
+      }
+      // 2. 当前图片下标-1
+      currentIndex--;
+      // 4. 设置ul的定位 == 当前图片下标*图片的宽度
+      ul.style.left = - currentIndex * li0.offsetWidth + 'px';
+      ul.style.transition = '.3s';
+      // 5. 设置序号按钮的样式
+      for (var j = 0; j < orderBtns.length; j++) {
+        orderBtns[j].classList.remove('current');
+      }
+      orderBtns[currentIndex].classList.add('current');
+    }
+
+    // 目标3 自动轮播
+    var timer = setInterval(function () {
+      right.onclick();
+    }, 1000)
+
+    // 目标4 鼠标移入清除周期定时器，鼠标移出恢复周期定时器
+    var inner = document.querySelector('#inner');
+    inner.onmouseover = function () {
+      clearInterval(timer);
+    }
+    inner.onmouseout = function () {
+      timer = setInterval(function () {
+        right.onclick();
+      }, 1000)
+    }
+  </script>
+</body>
+
+</html>

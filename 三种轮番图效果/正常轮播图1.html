@@ -1,0 +1,107 @@
+<!DOCTYPE html>
+<html>
+
+<head>
+	<title>轮播图1</title>
+	<style type="text/css">
+		ul {
+			list-style: none;
+		}
+		
+		.imgs {
+			width: 590px;
+			height: 470px;
+			overflow: hidden;
+		}
+
+		.dots {
+			width: 164px;
+			position: absolute;
+			left: 250px;
+			top: 450px;
+			z-index: 999;
+		}
+
+		.dot {
+			width: 10px;
+			height: 10px;
+			border: 2px solid #fff;
+			border-radius: 10px;
+			display: inline-block;
+			cursor: pointer;
+		}
+	</style>
+</head>
+
+<body>
+	<div class="ad">
+		<ul id="imgs" class="imgs">
+			<li class="img_li"><img src="images/5.jpg"></li>
+			<li class="img_li"><img src="images/6.jpg"></li>
+			<li class="img_li"><img src="images/1.jpg"></li>
+			<li class="img_li"><img src="images/2.jpg"></li>
+			<li class="img_li"><img src="images/3.jpg"></li>
+			<li class="img_li"><img src="images/4.jpg"></li>
+		</ul>
+		<ul class="dots">
+			<li class="dot" style="background-color: #fff"></li>
+			<li class="dot"></li>
+			<li class="dot"></li>
+			<li class="dot"></li>
+			<li class="dot"></li>
+			<li class="dot"></li>
+		</ul>
+	</div>
+
+	 <script type="text/javascript">
+	window.onload = function(){
+		//轮播图 综合效果
+		// 专门切换图片的函数
+		function change(n){
+			var dots = document.querySelectorAll('.dot');
+			var img_lis = document.querySelectorAll('.img_li');
+			// 先隐藏所有图片 将所有圆圈变成空心
+			for(var j=0; j<img_lis.length; j++){
+				img_lis[j].style.display = 'none';
+				dots[j].style.backgroundColor = '';
+			}
+			n = n % img_lis.length; //0 1 2 3 4 5 0 1 2 3 4 5 
+			// 显示第n张图片
+			img_lis[n].style.display = 'block';
+			// 改变小圆圈的状态 当前这个圆圈 变成实心的
+			dots[n].style.backgroundColor = '#fff';
+		}
+
+		//设置定时器
+		var num = 0;
+		var timer = setInterval(function(){
+			num++;
+			// var img_lis = document.querySelectorAll('.img_li');
+			// if(num == img_lis.length) num =0;
+			change(num);
+		}, 1000);
+
+		//鼠标悬浮
+		var dots = document.querySelectorAll('.dot');
+		for(let i=0; i<dots.length; i++){
+			dots[i].onmouseover = function(){
+				change(i);
+				//停止定时器
+				clearInterval(timer);
+			}
+			//鼠标离开 重新设置定时器
+			dots[i].onmouseout = function(){
+				num = i;//新的定时器 从第几张图片开始
+				//注意 timer必须是全局变量
+				timer = setInterval(function(){
+					num++;
+					change(num);
+				}, 1000);
+			}
+		}
+	}
+	
+</script> 
+</body>
+
+</html>
